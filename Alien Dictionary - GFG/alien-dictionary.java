@@ -84,69 +84,42 @@ class GFG {
 
 class Solution
 {
-    public String toposortBfs(int K,ArrayList<ArrayList<Integer>> adj){
-        String ans = "";
-        int[] indegree = new int[K];
-        for(int i=0;i<K;i++){
-        for(int j=0;j<adj.get(i).size();j++){
-            indegree[adj.get(i).get(j)]++;
-        }
-        }
-        Queue<Integer> q = new LinkedList<>();
-        for(int i=0;i<K;i++){
-            if(indegree[i] == 0) q.add(i);
-        }
-        while(!q.isEmpty()){
-            int node = q.poll();
-            ans += (char)(node + (int)('a'));
-            for(int adjnode:adj.get(node)){
-                indegree[adjnode]--;
-                if(indegree[adjnode] == 0) q.add(adjnode);
-            }
-        }
-        return ans;
-    }
-    public void dfs(ArrayList<ArrayList<Integer>> adj,int[] visited,int node,Stack<Integer> st){
-        visited[node] = 1;
-        for(int adjnode:adj.get(node)){
-            if(visited[adjnode]==0) dfs(adj,visited,adjnode,st);
-        }
-        st.add(node);
-    }
-    public String toposortdfs(int K,ArrayList<ArrayList<Integer>> adj){
-        int[] visited = new int[K];
-        Stack<Integer> st = new Stack<>();
-        for(int i=0;i<K;i++){
-            if(visited[i]==0){
-                dfs(adj,visited,i,st);
-            }
-        }
-        String ans = "";
-        while(!st.isEmpty()){
-            ans += (char)(st.pop() +(int)'a');
-        }
-        return ans;
-    }
     public String findOrder(String [] dict, int N, int K)
     {
         // Write your code here
-        int len = dict.length;
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        List<List<Integer>> adj = new ArrayList<>();
         for(int i=0;i<K;i++){
             adj.add(new ArrayList<>());
         }
-        for(int i=0;i<len-1;i++){
+        int[] indegree = new int[K];
+        for(int i=0;i<N-1;i++){
             String s1 = dict[i];
             String s2 = dict[i+1];
             int minLen = Math.min(s1.length(),s2.length());
             for(int j=0;j<minLen;j++){
                 if(s1.charAt(j)!=s2.charAt(j)){
-                    adj.get(s1.charAt(j)-'a').add(s2.charAt(j)-'a');
+                    char ch = s1.charAt(j);
+                    char ch1 = s2.charAt(j);
+                    adj.get(ch-'a').add(ch1-'a');
+                    indegree[ch1-'a']++;
                     break;
                 }
             }
         }
-        //toposortBfs(K,adj);
-        return toposortdfs(K,adj);
+        Queue<Integer> q = new LinkedList<>();
+        for(int i=0;i<K;i++){
+            if(indegree[i] == 0) q.add(i);
+        }
+        String ans = "";
+        while(!q.isEmpty()){
+            int node = q.poll();
+            ans +=(char)('a'+node);
+            for(int adjNode:adj.get(node)){
+                indegree[adjNode]--;
+                if(indegree[adjNode] == 0) q.add(adjNode);
+            }
+        }
+        return ans;
+        }
+        
     }
-}
