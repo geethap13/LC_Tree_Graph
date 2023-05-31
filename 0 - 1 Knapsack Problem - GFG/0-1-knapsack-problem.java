@@ -52,19 +52,22 @@ class Solution
     static int knapSack(int W, int wt[], int val[], int n) 
     { 
          // your code here 
-         int[][] dp = new int[n][W+1];
+        //  int[][] dp = new int[n][W+1];
+        int[] prev = new int[W+1];
          for(int t =  wt[0];t<=W;t++){
-             dp[0][t] = val[0];
+             prev[t] = val[0];
          }
          for(int i=1;i<n;i++){
+             int[] cur = new int[W+1];
              for(int t=0;t<=W;t++){
-                 int notpick = dp[i-1][t];
+                 int notpick =  prev[t];
                  int pick = 0;
-                 if(wt[i]<=t)pick =  val[i] + dp[i-1][t-wt[i]];
-                 dp[i][t] = Math.max(pick,notpick);
+                 if(wt[i]<=t)pick =  val[i] + prev[t-wt[i]];
+                 cur[t] = Math.max(pick,notpick);
              }
+             prev = cur;
          }
-         return dp[n-1][W];
+         return prev[W];
     } 
 }
 
