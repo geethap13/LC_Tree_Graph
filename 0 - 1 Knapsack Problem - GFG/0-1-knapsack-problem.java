@@ -57,8 +57,10 @@ class Solution
          for(int t =  wt[0];t<=W;t++){
              prev[t] = val[0];
          }
+         prev[0] = 0;
          for(int i=1;i<n;i++){
              int[] cur = new int[W+1];
+             cur[0] = 0;
              for(int t=0;t<=W;t++){
                  int notpick =  prev[t];
                  int pick = 0;
