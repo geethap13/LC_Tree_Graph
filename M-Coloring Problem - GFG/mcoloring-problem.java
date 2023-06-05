@@ -34,20 +34,27 @@ class solve {
     // Function to determine if graph can be coloured with at most M colours
     // such
     // that no two adjacent vertices of graph are coloured with same colour.
-    public boolean isValid(int node,int[] visited,List<List<Integer>> adj,int color){
-        for(int adjNode:adj.get(node)){
-            if(visited[adjNode] == color) return false;
+    public boolean isValid(int node,int[] visited,List<List<Integer>> adj,int color,boolean[][] graph,int n){
+        // for(int adjNode:adj.get(node)){
+        //     if(visited[adjNode] == color) return false;
+        // }
+        // return true;
+        for(int i=0;i<n;i++){
+            if(graph[node][i] == true || graph[i][node]==true){
+                if(visited[i] == color) return false;
+                
+            }
         }
         return true;
     }
-    public boolean graphColoringHelper(int node,List<List<Integer>> adj,int m,int[] visited,int n){
+    public boolean graphColoringHelper(int node,List<List<Integer>> adj,int m,int[] visited,int n,boolean[][] graph){
         if(node == n){
             return true;
         }
         for(int i=1;i<=m;i++){
-            if(visited[node] == 0 && isValid(node,visited,adj,i)){
+            if(visited[node] == 0 && isValid(node,visited,adj,i,graph,n)){
                 visited[node] = i;
-                if(graphColoringHelper(node+1,adj,m,visited,n)) return true;
+                if(graphColoringHelper(node+1,adj,m,visited,n,graph)) return true;
                 visited[node] = 0;
             }
         }
@@ -56,28 +63,20 @@ class solve {
     public boolean graphColoring(boolean graph[][], int m, int n) {
         // Your code here
         List<List<Integer>> adj = new ArrayList<>();
-        for(int i=0;i<n;i++){
-            List<Integer> sublist  = new ArrayList<>();
-            for(int j=0;j<n;j++){
-                if(graph[i][j]==true){
-                    sublist.add(j);
-                }
-            }
-            adj.add(sublist);
-        }
         // for(int i=0;i<n;i++){
-        //     adj.add(new ArrayList<>());
+        //     List<Integer> sublist  = new ArrayList<>();
+        //     for(int j=0;j<n;j++){
+        //         if(graph[i][j]==true){
+        //             sublist.add(j);
+        //         }
+        //     }
+        //     adj.add(sublist);
         // }
-        // for(int i=0;i<graph.length;i++){
-        //     int u = graph[i][0];
-        //     int v = graph[i][1];
-        //     adj.get(u).add(v);
-        //     adj.get(v).add(u);
-        // }
+        
         
         int[] visited = new int[n];
         
-        if(graphColoringHelper(0,adj,m,visited,n)) return true;
+        if(graphColoringHelper(0,adj,m,visited,n,graph)) return true;
         return false;
     }
 }
