@@ -34,34 +34,31 @@ class Rat {
 
 // m is the given matrix and n is the order of matrix
 class Solution {
-    static int[][] del = {{1,0},{0,-1},{0,1},{-1,0}};
-    public static void findPathHelper(int i,int j,int[][] m,int n,String path,ArrayList<String> ans,int[][] visited){
-        // System.out.println(path);
-        if(i == n-1 && j == n-1) {
+    static int del[][] = {{1,0},{0,-1},{0,1},{-1,0}};
+    public static void findPathHelper(int i,int j,int[][] m,int n,int[][] visited,String path, ArrayList<String> ans ){
+        if(i==n-1 && j==n-1){
             ans.add(new String(path));
             return;
         }
-        String dir ="DLRU";
-        for(int k=0;k<4;k++){
+        String dir = "DLRU";
+        for(int k=0;k<del.length;k++){
             int row = i+del[k][0];
             int col = j+del[k][1];
-            if(row<0||row>=n ||col<0||col>=n) continue;
-            if(visited[row][col] == 0 && m[row][col] ==1) {
+            if(row<0||row>=n||col<0||col>=n)continue;
+            if(visited[row][col] == 0 && m[row][col] == 1){
                 visited[row][col] = 1;
-                findPathHelper(row,col,m,n,path+dir.charAt(k),ans,visited);
-                visited[row][col] = 0;
+                 findPathHelper(row,col,m,n,visited,path+dir.charAt(k),ans);
+                 visited[row][col] = 0;
             }
-            
-        }
-        
+         }
     }
     public static ArrayList<String> findPath(int[][] m, int n) {
         // Your code here
-        ArrayList<String> ans = new ArrayList<>();
         int[][] visited = new int[n][n];
-        visited[0][0] = 1;
-        if(m[0][0]==1)
-        findPathHelper(0,0,m,n,"",ans,visited);
+        ArrayList<String> ans = new ArrayList<>();
+        visited[0][0] =1;
+        if(m[0][0] == 1)
+        findPathHelper(0,0,m,n,visited,"",ans);
         return ans;
     }
 }
