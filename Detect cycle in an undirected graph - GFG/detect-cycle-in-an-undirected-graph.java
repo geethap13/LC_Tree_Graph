@@ -32,6 +32,9 @@ class GFG {
 // } Driver Code Ends
 
 
+//Time Complexity: O(N+E),  N is the time taken and E is for traveling through adjacent nodes overall. 
+
+//Space Complexity: O(N)
 class Solution {
     // Function to detect cycle in an undirected graph.
     public boolean dfs(int node,int parent,int V,ArrayList<ArrayList<Integer>> adj,int[] visited){
@@ -44,12 +47,33 @@ class Solution {
         }
         return false;
     }
+    public boolean bfs(int i,int V,ArrayList<ArrayList<Integer>> adj,int[] visited){
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{i,-1});
+        visited[i] =1;
+        while(!q.isEmpty()){
+            int[] pair = q.poll();
+            int node = pair[0];
+            int parent = pair[1];
+            for(Integer adjNode:adj.get(node)){
+                if(visited[adjNode] == 0){
+                    q.add(new int[]{adjNode,node});
+                    visited[adjNode]=1;
+                }
+                else if(parent !=adjNode) return true;
+            }
+            
+        }
+        return false;
+    }
+    
     public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
         // Code here
         int[] visited = new int[V];
         for(int i=0;i<V;i++){
             if(visited[i] == 0){
-                if(dfs(i,-1,V,adj,visited) == true) return true;
+                // if(dfs(i,-1,V,adj,visited) == true) return true;
+                if(bfs(i,V,adj,visited) == true) return true;
             }
         }
         return false;
