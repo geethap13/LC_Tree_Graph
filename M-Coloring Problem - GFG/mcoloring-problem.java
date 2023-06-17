@@ -34,20 +34,27 @@ class solve {
     // Function to determine if graph can be coloured with at most M colours
     // such
     // that no two adjacent vertices of graph are coloured with same colour.
-    public boolean isValid(int node,int[] visited,int color,int n,boolean[][] graph){
-        for(int i=0;i<n;i++){
-            if(i!=node && graph[node][i] == true && visited[i] == color) return false;
+    
+    //Time Complexity: O( N^M *N) (n raised to m)
+
+    //Space Complexity: O(N)
+    public boolean isValid(int node,int[] visited,int color,int n,boolean[][] graph, List<List<Integer>> adj){
+        // for(int i=0;i<n;i++){
+        //     if(i!=node && graph[node][i] == true && visited[i] == color) return false;
+        // }
+        for(Integer adjNode:adj.get(node)){
+            if(adjNode!=node && visited[adjNode] == color) return false;
         }
         return true;
     }
-    public boolean graphColoringHelper(int index,boolean graph[][],int m,int n,int[] visited){
+    public boolean graphColoringHelper(int index,boolean graph[][],int m,int n,int[] visited, List<List<Integer>> adj){
         if(index == n){
             return true;
         }
         for(int i=1;i<=m;i++){
-            if(isValid(index,visited,i,n,graph)){
+            if(isValid(index,visited,i,n,graph,adj)){
             visited[index] = i;
-             if(graphColoringHelper(index+1,graph,m,n,visited)) return true;
+             if(graphColoringHelper(index+1,graph,m,n,visited,adj)) return true;
               visited[index] = 0;
             }
         }
@@ -56,7 +63,18 @@ class solve {
     public boolean graphColoring(boolean graph[][], int m, int n) {
         // Your code here
         int[] visited = new int[n];
-        if(graphColoringHelper(0,graph,m,n,visited)) return true;
+        List<List<Integer>> adj = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(graph[i][j] == true){
+                    adj.get(i).add(j);
+                }
+            }
+        }
+        if(graphColoringHelper(0,graph,m,n,visited,adj)) return true;
         return false;
     }
 }
