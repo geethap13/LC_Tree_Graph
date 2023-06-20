@@ -52,7 +52,7 @@ class Solution{
 	    
 	    for(int row[]:dp)
 	    Arrays.fill(row,-1);
-	   int ans = perfectSumHelper(0,arr,n,sum,dp)%mod;
+	   int ans = perfectSumHelper(0,arr,n,sum,dp);
 	   return ans;
 	} 
 }
