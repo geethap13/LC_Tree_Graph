@@ -49,8 +49,22 @@ class Solution{
     {
         // code here
         int[][] dp = new int[N][W+1];
-        for(int[] row:dp)
-        Arrays.fill(row,-1);
-      return  knapSackHelper(N-1,W,val,wt,dp);
+    //     for(int[] row:dp)
+    //     Arrays.fill(row,-1);
+    //   return  knapSackHelper(N-1,W,val,wt,dp);
+    for(int t=wt[0];t<=W;t++){
+        dp[0][t] = (t/wt[0]) *val[0];
+    }
+    for(int i=1;i<N;i++){
+        for(int t=0;t<=W;t++){
+        int notpick = dp[i-1][t];
+        int pick = 0;
+        if(wt[i]<=t){
+            pick = val[i]+ dp[i][t-wt[i]];
+        }
+         dp[i][t] = Math.max(notpick,pick);
+        }
+    }
+    return dp[N-1][W];
     }
 }
