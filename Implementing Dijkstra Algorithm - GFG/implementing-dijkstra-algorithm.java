@@ -53,15 +53,15 @@ class DriverClass
 
 
 //User function Template for Java
-
 class Pair{
     int weight;
-    int v;
-    Pair(int weight,int v){
+    int node;
+    Pair(int node,int weight ){
         this.weight = weight;
-        this.v=v;
+        this.node = node;
     }
 }
+
 class Solution
 {
     //Function to find the shortest distance of all the vertices
@@ -70,20 +70,20 @@ class Solution
     {
         // Write your code here
         PriorityQueue<Pair> pq = new PriorityQueue<>((x,y)-> x.weight - y.weight);
-        pq.add(new Pair(0,S));
         int[] dist = new int[V];
-        Arrays.fill(dist,Integer.MAX_VALUE);
-        dist[S]= 0;
+        for(int i=0;i<V;i++) dist[i] =(int)(1e9);
+        pq.add(new Pair(S,0));
+        dist[S] = 0;
         while(!pq.isEmpty()){
             Pair p = pq.poll();
-            int curr = p.weight;
-            int node = p.v;
-            for(ArrayList<Integer> adjNode:adj.get(node)){
-                int newNode = adjNode.get(0);
-                int adjDist = adjNode.get(1);
-                if(curr+adjDist<dist[newNode]){
-                    dist[newNode] = curr+adjDist;
-                    pq.add(new Pair(dist[newNode],newNode));
+            int node = p.node;
+            int weight = p.weight;
+            for(int i =0;i<adj.get(node).size();i++){
+                int adjnode = adj.get(node).get(i).get(0);
+                int adjweight = adj.get(node).get(i).get(1);
+                if(adjweight + weight < dist[adjnode]){
+                    dist[adjnode] = adjweight + weight ;
+                    pq.add(new Pair(adjnode,dist[adjnode]));
                 }
             }
         }
