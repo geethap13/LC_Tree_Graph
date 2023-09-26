@@ -24,7 +24,7 @@ class GfG {
 class Solution {
     public int longestkSubstr(String s, int k) {
         // code here
-        int start  =0,end = 0,counter = 0,len =0,n=s.length();
+       int start  =0,end = 0,counter = 0,len =0,n=s.length();
         int[] map = new int[128];
         while(end<n){
             char ch = s.charAt(end);
@@ -38,9 +38,9 @@ class Solution {
                 if(map[ch2] ==0) counter--;
                 start++;
             }
-            if(counter == k){
+            // if(counter == k){
                 len = Math.max(len,end-start);
-            }
+            // }
         }
         return len == 0?-1:len;
     }
