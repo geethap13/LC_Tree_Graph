@@ -26,28 +26,27 @@ class GFG {
 // User function Template for Java
 
 class Solution {
-    public static int findDistSubcnt(String str){
-        int n = str.length();
+    public static int findDistinctSubsequence(String S){
+        int n = S.length();
         int[] dp = new int[n+1];
-        dp[0] = 1;//for empty string is a subsequence for any string
+        dp[0]=1;
         Map<Character,Integer> map = new HashMap<>();
         for(int i=1;i<=n;i++){
-            dp[i] = 2*dp[i-1];
-            char ch = str.charAt(i-1);
+            dp[i] = dp[i-1]*2;
+            char ch = S.charAt(i-1);
             if(map.containsKey(ch)){
-                int lastOccur = map.get(ch);
-                dp[i] = dp[i] - dp[lastOccur-1];
+                int last = map.get(ch);
+                dp[i] = dp[i] - dp[last];
             }
-            map.put(ch,i);
+            map.put(ch,i-1);
         }
-        
-        return dp[n];
+        return dp[n]-1;
     }
     public static String betterString(String str1, String str2) {
         // Code here
-        int cnt1 = findDistSubcnt(str1);
-        int cnt2 = findDistSubcnt(str2);
-        if(cnt2>cnt1) return str2;
-        else return str1;
+        int st1 = findDistinctSubsequence(str1);
+        int st2 = findDistinctSubsequence(str2);
+        if(st1>=st2) return str1;
+        return str2;
     }
 }
